@@ -4,7 +4,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require('mongoose');
-const md5 = require('md5');
+const bcrypt = require("bcrypt");
+const saltrounds = 10;  
 
 const app = express();
 
@@ -47,24 +48,27 @@ app.get('/register', function(req, res){
 })
 
 app.post('/register', async(req,res) => {
-    try {
-        // const userData = req.body;
-        const newUser = new userDetails({
-            email: req.body.email,
-            password: md5(req.body.password)
-        });
-        await newUser.save();
-        res.render("secrets");
-        // res.status(201).json({message: 'Registered successfully!'});
-      } catch (error) {
-        console.error(error);
-        res.status(500).json({error: 'Internal Server Error'});
-      }
+    bcrypt.hash(req.body.password, saltrounds, async(err,hash) => {
+        try {
+            // const userData = req.body;
+            const newUser = new userDetails({
+                email: req.body.email,
+                password: hash
+            });
+            await newUser.save();
+            res.render("secrets");
+            // res.status(201).json({message: 'Registered successfully!'});
+          } catch (error) {
+            console.error(error);
+            res.status(500).json({error: 'Internal Server Error'});
+          }    
+    });
 })
 
 app.post('/login', async(req, res) => {
+    
     const email= req.body.email;
-    const password = md5(req.body.password);
+    const password = req.body.password;
 
     try {
         const user = await userDetails.findOne({ 'email': email });
@@ -74,13 +78,17 @@ app.post('/login', async(req, res) => {
         }
 
         // Compare the encrypted form of the entered password with the stored encrypted password
-        if (user.password === password) {
+        bcrypt.compare(password, user.password, async(err, result) => {
+            if(result === true)
+            {
+                res.render("secrets");
+            }
+            else {
+               // Passwords do not match
+               res.status(401).send("Invalid Username And Password.");
+           }
+            })
             // Passwords match, user is authenticated
-            res.render("secrets");
-        } else {
-            // Passwords do not match
-            res.status(401).send("Invalid Username And Password.");
-        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
