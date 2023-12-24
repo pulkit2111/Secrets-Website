@@ -4,3 +4,4 @@ git add <fileName> or "--all" to add files to staging area
 git commit -m "<commit message>"
 git log - to see past commits
 git diff - to see the difference between the last comminted stage and current stage
+git checkout <fileName> - to rollback any changes made and go to the last commited stage
