@@ -11,3 +11,6 @@ git push -u origin main
 git branch <branch-name> - to create a new a branch
 git branch - to see all the current branches
 git checkout <branch-name> - to switch to another branch
+git merge <branch-name> to merge a branch to master branch
+git push origin main -u - to again push new code into github in the main branch
+git push origin <branch-name> - to push new branch into github
