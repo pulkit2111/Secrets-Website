@@ -1,0 +1,5 @@
+git init - To Initialize
+git status - to see the status of files
+git add <fileName> or "--all" to add files to staging area
+git commit -m "<commit message>"
+git log - to see past commits
