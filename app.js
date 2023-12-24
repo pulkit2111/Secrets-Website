@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require('mongoose');
-const encrypt = require('mongoose-encryption');
+const md5 = require('md5');
 
 const app = express();
 
@@ -30,8 +30,6 @@ const userSchema = new mongoose.Schema({
     password: String
 } ,{ versionKey: false });
 
-userSchema.plugin(encrypt, {secret: process.env.SECRET, encryptedFields: ["password"]});
-
 const userDetails = new mongoose.model('registrations', userSchema);
 
 app.get('/', function(req, res){
@@ -50,8 +48,11 @@ app.get('/register', function(req, res){
 
 app.post('/register', async(req,res) => {
     try {
-        const userData = req.body;
-        const newUser = new userDetails(userData);
+        // const userData = req.body;
+        const newUser = new userDetails({
+            email: req.body.email,
+            password: md5(req.body.password)
+        });
         await newUser.save();
         res.render("secrets");
         // res.status(201).json({message: 'Registered successfully!'});
@@ -62,7 +63,8 @@ app.post('/register', async(req,res) => {
 })
 
 app.post('/login', async(req, res) => {
-    const { email, password } = req.body;
+    const email= req.body.email;
+    const password = md5(req.body.password);
 
     try {
         const user = await userDetails.findOne({ 'email': email });

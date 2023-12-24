@@ -7,3 +7,7 @@ git diff - to see the difference between the last comminted stage and current st
 git checkout <fileName> - to rollback any changes made and go to the last commited stage
 git remote add origin https://github.com/pulkit2111/Secrets-Website.git
 git push -u origin main
+:qa <enter> to quit
+git branch <branch-name> - to create a new a branch
+git branch - to see all the current branches
+git checkout <branch-name> - to switch to another branch
