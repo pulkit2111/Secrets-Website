@@ -1,4 +1,5 @@
 //jshint esversion:6
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -21,14 +22,15 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 });
 
+console.log(process.env.SECRET);
+
 // user schema
 const userSchema = new mongoose.Schema({
     email: String,
     password: String
 } ,{ versionKey: false });
 
-const secret = "This is our little secret.";
-userSchema.plugin(encrypt, {secret: secret, encryptedFields: ["password"]});
+userSchema.plugin(encrypt, {secret: process.env.SECRET, encryptedFields: ["password"]});
 
 const userDetails = new mongoose.model('registrations', userSchema);
 
