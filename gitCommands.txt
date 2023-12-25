@@ -14,3 +14,4 @@ git checkout <branch-name> - to switch to another branch
 git merge <branch-name> to merge a branch to master branch
 git push origin main -u - to again push new code into github in the main branch
 git push origin <branch-name> - to push new branch into github
+git branch -m <new--branch-name> - to rename a branch (first go into that branch only then is can be renamed)
