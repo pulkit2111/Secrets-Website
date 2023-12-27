@@ -87,21 +87,6 @@ app.post('/login', async(req, res) => {
     }
 });
 
-// app.post('/login', async(req,res) =>{
-//     const{email, password} = req.body;
-
-//     const existingRecord = await userDetails.findOne({
-//         'email': email,
-//        'password' : password 
-//     });
-
-//     if(!existingRecord){
-//         return res.status(401).send("Invalid Username And Password.")
-//     }
-//     res.render("secrets");
-//     //res.status(200).send('You have successfully logged in.');
-// })
-
 app.listen(3000,function(){
     console.log("Server is running on port 3000.")
 })
